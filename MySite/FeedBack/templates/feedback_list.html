@@ -1,0 +1,14 @@
+<h2>Feedbacks pour {{ job.job_title }}</h2>
+<form method="get">
+    <label for="min">Note minimum :</label>
+    <input type="number" name="min" id="min" value="{{ min_rating }}" min="1" max="5">
+    <button type="submit">Filtrer</button>
+</form>
+<ul>
+    {% for f in feedbacks %}
+        <li>{{ f.author_name }} ({{ f.rating }}/5) : {{ f.comment }}</li>
+    {% empty %}
+        <li>Aucun feedback trouvé.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'feedback:add_feedback' job.id %}">Ajouter un feedback</a>

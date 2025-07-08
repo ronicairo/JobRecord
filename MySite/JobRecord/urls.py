@@ -16,10 +16,13 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from jobsite.views import stats_view
+from JobRecord import views as core_views 
 
 urlpatterns = [
+    path('', core_views.home, name='home'), 
     path("admin/", admin.site.urls),
-    path('', stats_view, name='stats'),
+    path('stats/', stats_view, name='stats'),
+    path('feedback/', include('FeedBack.urls', namespace='feedback')),
 ]

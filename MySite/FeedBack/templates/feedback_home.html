@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil Feedback</title>
+</head>
+<body>
+    <h1>Feedback - Sélectionner un Job</h1>
+    <ul>
+        {% for job in jobs %}
+            <li>
+                {{ job.job_title }} —
+                <a href="{% url 'feedback:feedback_list' job.id %}">Voir feedbacks</a>
+                |
+                <a href="{% url 'feedback:add_feedback' job.id %}">Ajouter feedback</a>
+                |
+                <a href="{% url 'feedback:average_rating' job.id %}">Moyenne</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

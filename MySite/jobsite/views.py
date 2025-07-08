@@ -13,3 +13,6 @@ def stats_view(request):
         'country_count': countries,
     }
     return render(request, "stats.html", context)
+
+def home(request):
+    return render(request, 'home.html')

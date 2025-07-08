@@ -1,0 +1,5 @@
+<h2>Note moyenne pour {{ job.job_title }}</h2>
+<p>
+    Moyenne : {{ average|default:"Aucune note" }}/5
+</p>
+<a href="{% url 'feedback:feedback_list' job.id %}">Voir les feedbacks</a>

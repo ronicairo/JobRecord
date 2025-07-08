@@ -40,7 +40,13 @@ class JobRecord(models.Model):
     remote_ratio = models.IntegerField()
     company_location = models.CharField(max_length=100)
     company_size = models.CharField(max_length=2)
-
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['job_title', 'work_year', 'employee_residence'],
+                name='unique_job_per_year_and_location'
+            )
+    ]
     def __str__(self):
         return f"{self.job_title} ({self.work_year})"
 

@@ -1,0 +1,111 @@
+Top 5 Job Titles les mieux payés :
+Research Team Lead: 560000.00 USD
+Analytics Engineering Manager: 399880.00 USD
+ML Infrastructure Engineer: 396875.00 USD
+Data Science Tech Lead: 375000.00 USD
+Machine Learning Performance Engineer: 345000.00 USD
+
+Salaire moyen par niveau d'expérience :
+EN: 66640.05 USD
+EX: 204201.25 USD
+MI: 103340.14 USD
+SE: 140300.10 USD
+
+Nombre de jobs par lieu d'entreprise :
+US: 681
+CA: 277
+GB: 250
+DE: 103
+AU: 80
+FR: 71
+IN: 70
+NL: 69
+ES: 54
+LT: 49
+AT: 48
+SK: 38
+PL: 38
+MX: 38
+BR: 37
+IE: 36
+PT: 33
+LV: 33
+IT: 29
+FI: 21
+CH: 21
+ZA: 20
+PH: 20
+NZ: 17
+JP: 17
+AR: 17
+CO: 16
+SG: 15
+BE: 15
+GR: 13
+EG: 12
+TR: 11
+CL: 10
+UA: 9
+NG: 9
+CZ: 9
+DK: 8
+SE: 7
+RU: 7
+RO: 7
+MT: 7
+IL: 7
+HU: 7
+EE: 7
+CY: 7
+SI: 6
+KR: 6
+KE: 6
+TW: 5
+PR: 5
+NO: 5
+LU: 5
+LB: 5
+EC: 5
+AE: 5
+SV: 4
+MK: 4
+HR: 4
+AM: 4
+TH: 3
+SA: 3
+RS: 3
+PK: 3
+PE: 3
+ID: 3
+HK: 3
+GH: 3
+DZ: 3
+DO: 3
+CR: 3
+BG: 3
+AS: 3
+MY: 2
+JM: 2
+HN: 2
+CD: 2
+BA: 2
+ZM: 1
+XK: 1
+VN: 1
+VE: 1
+QA: 1
+PA: 1
+OM: 1
+MU: 1
+MD: 1
+LS: 1
+JO: 1
+IR: 1
+IQ: 1
+GI: 1
+CN: 1
+CF: 1
+BS: 1
+AD: 1
+
+Ratio de jobs 100 % remote : 30.01%

@@ -4,12 +4,24 @@
     <meta charset="UTF-8">
     <title>Statistiques JobRecord</title>
 </head>
+ <style>
+        body { font-family: Arial, sans-serif; padding: 2rem; background-color: #181818; }
+        h1 { color: #f3f3f3; }
+        h1, li { color: #f3f3f3; }
+        ul { list-style: none; padding: 0; }
+        li { margin: 1rem 0; }
+        a { text-decoration: none; color: #007BFF; font-size: 1.1rem; }
+        a:hover { text-decoration: underline; }
+    </style>
 <body>
     <h1>Statistiques globales</h1>
-    <ul>
+    <ul style="margin-bottom: 30px;">
         <li><strong>Total de jobs :</strong> {{ total_jobs }}</li>
         <li><strong>Salaire moyen global :</strong> {{ avg_salary }} USD</li>
         <li><strong>Nombre de pays couverts :</strong> {{ country_count }}</li>
     </ul>
+    <a href="{% url 'feedback:dashboard' %}" style="padding: 10px 15px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px;">
+    Accéder au Dashboard des Feedbacks
+</a>
 </body>
 </html>

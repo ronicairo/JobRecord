@@ -1,0 +1,16 @@
+    <style>
+        body { font-family: Arial, sans-serif; padding: 2rem; background-color: #181818; }
+        h1,ul li, p { color: #f3f3f3; }
+        ul { list-style: none; padding: 0; }
+        li { margin: 1rem 0; }
+        a { text-decoration: none; color: #007BFF; font-size: 1.1rem; }
+        a:hover { text-decoration: underline; }
+    </style>
+    <h1>Dashboard des Jobs les mieux notés</h1>
+    <ul>
+        {% for job in top_rated_jobs %}
+            <li>{{ job.job_title }} – Note moyenne : {{ job.avg_rating|floatformat:2 }}</li>
+        {% endfor %}
+    </ul>
+    <p><strong>Nombre de feedbacks avec note ≥ 4 :</strong> {{ nb_feedbacks_pos }}</p>
+

@@ -20,6 +20,10 @@ def home(request):
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from jobsite.serializer import JobRecordSerializer, ContractSerializer, SkillSerializer, IndustrySerializer, CandidateSerializer
 from rest_framework import viewsets, filters
+from rest_framework.pagination import PageNumberPagination
+
+class JobRecordPagination(PageNumberPagination):
+    page_size = 5
 
 class JobRecordViewSet(viewsets.ModelViewSet):
     queryset = JobRecord.objects.all()
@@ -27,6 +31,7 @@ class JobRecordViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly] 
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['job_title']
+    pagination_class = JobRecordPagination
 
 class ContractViewSet(viewsets.ModelViewSet):
     queryset = Contract.objects.all()

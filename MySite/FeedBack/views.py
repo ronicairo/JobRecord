@@ -58,15 +58,22 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     serializer_class = FeedbackSerializer
     permission_classes = [IsAuthenticatedOrReadOnly] 
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['rating']
-    ordering_fields = ['rating']
+    search_fields = ['comment']
+    ordering_fields = ['created_at', 'rating']
     ordering = ['rating'] 
+
 def get_queryset(self):
-    queryset = super().get_queryset()
+    queryset = Feedback.objects.all()
     job_id = self.request.query_params.get('job')
+    min_rating = self.request.query_params.get('min_rating')
+
     if job_id:
         queryset = queryset.filter(job_id=job_id)
+    if min_rating:
+        queryset = queryset.filter(rating__gte=min_rating)
+
     return queryset
+
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()

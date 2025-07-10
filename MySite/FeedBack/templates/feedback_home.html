@@ -12,6 +12,24 @@
         background-color: #181818;
     }
 
+    .pagination-btn {
+    background-color: #00bfff;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    margin: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.pagination-btn:hover {
+    background-color: #009acd;
+    transform: translateY(-2px);
+}
+
     h1 {
         text-align: center;
         margin-bottom: 2rem;
@@ -101,45 +119,77 @@
 <script>
     const jobResultsDiv = document.getElementById("job-results");
     const errorText = document.getElementById("search-error");
+    let currentSearch = "";
 
     document.getElementById("search-form").addEventListener("submit", function (e) {
-        e.preventDefault(); // empêche le rechargement
-        const jobTitle = document.getElementById("job-title").value.trim();
+        e.preventDefault();
+        currentSearch = document.getElementById("job-title").value.trim();
+        fetchJobs(`/jobrecords/?search=${encodeURIComponent(currentSearch)}`);
+    });
 
-        fetch(`/jobrecords/?search=${encodeURIComponent(jobTitle)}`)
-            .then(response => {
+    function fetchJobs(url) {
+        fetch(url)
+            .then((response) => {
                 if (!response.ok) throw new Error("Erreur de la requête.");
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 jobResultsDiv.innerHTML = "";
                 errorText.textContent = "";
 
-                if (!Array.isArray(data) || data.length === 0) {
-                    jobResultsDiv.innerHTML = '<p style="color: #ff6666; text-align: center; font-weight: bold;">Aucun job correspondant.</p>';
+                if (!data.results || data.results.length === 0) {
+                    jobResultsDiv.innerHTML = `
+                        <p style="color: #ff6666; text-align: center; font-weight: bold;">
+                            Aucun job correspondant.
+                        </p>`;
                     return;
                 }
 
-                data.forEach(job => {
+                // Affiche les résultats
+                data.results.forEach((job) => {
                     const jobDiv = document.createElement("div");
                     jobDiv.classList.add("job-card");
 
                     jobDiv.innerHTML = `
-                            <div class="job-title">${job.job_title}</div>
-                            <div class="job-actions">
-                                <a href="/feedback/${job.id}/">Voir feedbacks</a>
-                                <a href="/feedback/${job.id}/add/">Ajouter feedback</a>
-                                <a href="/feedback/${job.id}/average/">Moyenne</a>
-                            </div>
-                        `;
+                        <div class="job-title">${job.job_title}</div>
+                        <div class="job-actions">
+                            <a href="/feedback/${job.id}/">Voir feedbacks</a>
+                            <a href="/feedback/${job.id}/add/">Ajouter feedback</a>
+                            <a href="/feedback/${job.id}/average/">Moyenne</a>
+                        </div>
+                    `;
                     jobResultsDiv.appendChild(jobDiv);
                 });
+
+                // Pagination
+                const paginationDiv = document.createElement("div");
+                paginationDiv.style.textAlign = "center";
+                paginationDiv.style.marginTop = "1rem";
+
+                if (data.previous) {
+                    const prevBtn = document.createElement("button");
+                    prevBtn.className = "pagination-btn";
+                    prevBtn.textContent = "Page précédente";
+                    prevBtn.style.marginRight = "1rem";
+                    prevBtn.onclick = () => fetchJobs(data.previous);
+                    paginationDiv.appendChild(prevBtn);
+                }
+
+                if (data.next) {
+                    const nextBtn = document.createElement("button");
+                    nextBtn.className = "pagination-btn";
+                    nextBtn.textContent = "Page suivante";
+                    nextBtn.onclick = () => fetchJobs(data.next);
+                    paginationDiv.appendChild(nextBtn);
+                }
+
+                jobResultsDiv.appendChild(paginationDiv);
             })
-            .catch(error => {
+            .catch((error) => {
                 errorText.textContent = "Une erreur est survenue. Réessaie.";
                 console.error(error);
             });
-    });
+    }
 </script>
 
 </html>

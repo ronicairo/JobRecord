@@ -19,16 +19,21 @@ def home(request):
 
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from jobsite.serializer import JobRecordSerializer, ContractSerializer, SkillSerializer, IndustrySerializer, CandidateSerializer
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 
 class JobRecordViewSet(viewsets.ModelViewSet):
     queryset = JobRecord.objects.all()
     serializer_class = JobRecordSerializer
     permission_classes = [IsAuthenticatedOrReadOnly] 
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['job_title']
 
 class ContractViewSet(viewsets.ModelViewSet):
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly] 
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['contract_type']
 
 class SkillViewSet(viewsets.ModelViewSet):
     queryset = Skill.objects.all()

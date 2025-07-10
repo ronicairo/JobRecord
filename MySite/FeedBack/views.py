@@ -61,6 +61,12 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     search_fields = ['rating']
     ordering_fields = ['rating']
     ordering = ['rating'] 
+def get_queryset(self):
+    queryset = super().get_queryset()
+    job_id = self.request.query_params.get('job')
+    if job_id:
+        queryset = queryset.filter(job_id=job_id)
+    return queryset
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()

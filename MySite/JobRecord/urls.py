@@ -35,3 +35,4 @@ urlpatterns = [
     path('stats/', stats_view, name='stats'),
     path('feedback/', include('FeedBack.urls', namespace='feedback')),
 ]
+urlpatterns += router.urls

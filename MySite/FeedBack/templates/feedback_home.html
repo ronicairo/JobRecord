@@ -1,31 +1,145 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Accueil Feedback</title>
 </head>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 2rem; background-color: #181818; }
-        h1 { color: #f3f3f3; text-align: center; }
-        h1, li { color: #f3f3f3; }
-        ul { list-style: none; padding: 0; }
-        li { margin: 1rem 0; }
-        a { text-decoration: none; color: #007BFF; font-size: 1.1rem; }
-        a:hover { text-decoration: underline; }
-    </style>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 2rem;
+        background-color: #181818;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #00bfff;
+        font-size: 2.5rem;
+    }
+
+    form {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    input[type="text"] {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border-radius: 8px 0 0 8px;
+        border: none;
+        outline: none;
+        width: 250px;
+    }
+
+    button {
+        padding: 0.5rem 1.2rem;
+        font-size: 1rem;
+        background-color: #00bfff;
+        color: white;
+        border: none;
+        border-radius: 0 8px 8px 0;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #009acd;
+    }
+
+    #job-results {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .job-card {
+        background-color: #1e1e1e;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .job-title,
+    strong {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 0.8rem;
+        color: #ffffff;
+    }
+
+    .job-actions a,
+    #job-results a {
+        margin-right: 1rem;
+        color: #00bfff;
+        font-weight: 500;
+    }
+
+    .job-actions a:hover {
+        text-decoration: underline;
+    }
+
+    #search-error {
+        color: #ff6666;
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
+
 <body>
-    <h1>Job - FeedBack</h1>
-    <ul>
-        {% for job in jobs %}
-            <li>
-                {{ job.job_title }} —
-                <a href="{% url 'feedback:feedback_list' job.id %}">Voir feedbacks</a>
-                |
-                <a href="{% url 'feedback:add_feedback' job.id %}">Ajouter feedback</a>
-                |
-                <a href="{% url 'feedback:average_rating' job.id %}">Moyenne</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <h1>Recherche de Jobs</h1>
+    <form id="search-form">
+        <input type="text" id="job-title" placeholder="Titre du job" required />
+        <button type="submit">Rechercher</button>
+    </form>
+    <p id="search-error"></p>
+
+    <div id="job-results"></div>
 </body>
+<script>
+    const jobResultsDiv = document.getElementById("job-results");
+    const errorText = document.getElementById("search-error");
+
+    document.getElementById("search-form").addEventListener("submit", function (e) {
+        e.preventDefault(); // empêche le rechargement
+        const jobTitle = document.getElementById("job-title").value.trim();
+
+        fetch(`/jobrecords/?search=${encodeURIComponent(jobTitle)}`)
+            .then(response => {
+                if (!response.ok) throw new Error("Erreur de la requête.");
+                return response.json();
+            })
+            .then(data => {
+                jobResultsDiv.innerHTML = "";
+                errorText.textContent = "";
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    jobResultsDiv.innerHTML = '<p style="color: #ff6666; text-align: center; font-weight: bold;">Aucun job correspondant.</p>';
+                    return;
+                }
+
+                data.forEach(job => {
+                    const jobDiv = document.createElement("div");
+                    jobDiv.classList.add("job-card");
+
+                    jobDiv.innerHTML = `
+                            <div class="job-title">${job.job_title}</div>
+                            <div class="job-actions">
+                                <a href="/feedback/${job.id}/">Voir feedbacks</a>
+                                <a href="/feedback/${job.id}/add/">Ajouter feedback</a>
+                                <a href="/feedback/${job.id}/average/">Moyenne</a>
+                            </div>
+                        `;
+                    jobResultsDiv.appendChild(jobDiv);
+                });
+            })
+            .catch(error => {
+                errorText.textContent = "Une erreur est survenue. Réessaie.";
+                console.error(error);
+            });
+    });
+</script>
+
 </html>

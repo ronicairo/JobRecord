@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Feedback
+from .models import Feedback, Category
 from jobsite.models import JobRecord
 from django.db.models import Avg, Count
 from django.utils import timezone
@@ -47,3 +47,14 @@ def dashboard_view(request):
         'top_rated_jobs': top_rated_jobs,
         'nb_feedbacks_pos': nb_feedbacks_pos,
     })
+
+from FeedBack.serializer import FeedbackSerializer, CategorySerializer
+from rest_framework import viewsets
+
+class FeedbackViewSet(viewsets.ModelViewSet):
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer

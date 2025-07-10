@@ -10,3 +10,9 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f"{self.author_name} ({self.rating}/5)"
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name

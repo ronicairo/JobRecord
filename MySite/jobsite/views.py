@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import JobRecord
+from .models import JobRecord, Contract, Skill, Industry, Candidate
 from django.db.models import Avg
 
 def stats_view(request):
@@ -16,3 +16,26 @@ def stats_view(request):
 
 def home(request):
     return render(request, 'home.html')
+
+from jobsite.serializer import JobRecordSerializer, ContractSerializer, SkillSerializer, IndustrySerializer, CandidateSerializer
+from rest_framework import viewsets
+
+class JobRecordViewSet(viewsets.ModelViewSet):
+    queryset = JobRecord.objects.all()
+    serializer_class = JobRecordSerializer
+
+class ContractViewSet(viewsets.ModelViewSet):
+    queryset = Contract.objects.all()
+    serializer_class = ContractSerializer
+
+class SkillViewSet(viewsets.ModelViewSet):
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
+
+class IndustryViewSet(viewsets.ModelViewSet):
+    queryset = Industry.objects.all()
+    serializer_class = IndustrySerializer
+
+class CandidateViewSet(viewsets.ModelViewSet):
+    queryset = Candidate.objects.all()
+    serializer_class = CandidateSerializer

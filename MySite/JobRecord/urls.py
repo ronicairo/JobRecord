@@ -15,10 +15,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from gc import get_stats
 from django.contrib import admin
 from django.urls import path, include
-from jobsite.views import stats_view
+from jobsite.views import ContractViewSet, JobRecordViewSet, SkillViewSet, IndustryViewSet, CandidateViewSet, stats_view
 from JobRecord import views as core_views 
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'jobrecords', JobRecordViewSet)
+router.register(r'contracts', ContractViewSet)
+router.register(r'skills', SkillViewSet)     
+router.register(r'industry', IndustryViewSet)
+router.register(r'candidates', CandidateViewSet)
 
 urlpatterns = [
     path('', core_views.home, name='home'), 

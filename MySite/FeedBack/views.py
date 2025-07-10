@@ -1,3 +1,4 @@
+from warnings import filters
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Feedback, Category
 from jobsite.models import JobRecord
@@ -49,11 +50,17 @@ def dashboard_view(request):
     })
 
 from FeedBack.serializer import FeedbackSerializer, CategorySerializer
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class FeedbackViewSet(viewsets.ModelViewSet):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly] 
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['rating']
+    ordering_fields = ['rating']
+    ordering = ['rating'] 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()

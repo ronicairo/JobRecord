@@ -17,12 +17,14 @@ def stats_view(request):
 def home(request):
     return render(request, 'home.html')
 
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from jobsite.serializer import JobRecordSerializer, ContractSerializer, SkillSerializer, IndustrySerializer, CandidateSerializer
 from rest_framework import viewsets
 
 class JobRecordViewSet(viewsets.ModelViewSet):
     queryset = JobRecord.objects.all()
     serializer_class = JobRecordSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly] 
 
 class ContractViewSet(viewsets.ModelViewSet):
     queryset = Contract.objects.all()

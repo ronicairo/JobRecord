@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}JobRecord{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #181818;
+            margin: 0;
+        }
+
+        nav.main-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+
+            border-radius: 10px;
+    
+            margin-bottom: 2rem;
+        }
+
+        .main-nav a {
+            color:  #00bfff;
+            background-color: #1e1e1e;
+            box-shadow: 0 2px 6px rgb(0, 0, 0);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .main-nav a:hover {
+            background-color: #2a2a2a;
+            transform: translateY(-2px);
+        }
+
+        @media screen and (max-width: 600px) {
+            nav.main-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .main-nav a {
+                width: 100%;
+                text-align: center;
+                font-size: 1.1rem;
+            }
+        }
+
+        h1, h2, label, strong, p {
+            color: #f3f3f3;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<nav class="main-nav">
+    <a href="/stats/">Stats Jobs</a>
+    <a href="/feedback/">Rechercher un Job</a>
+    <a href="/feedback/dashboard/">Dashboard</a>
+    <a href="/admin/">Admin Django</a>
+</nav>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

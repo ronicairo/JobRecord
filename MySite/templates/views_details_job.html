@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Détails du Job</title>
+   {% extends "base.html" %}
+
+   {% block title %}Détail du Job{% endblock %}
+
+   {% block content %}
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,8 +63,7 @@
     <div class="job-field"><span class="job-label">Lieu de l'entreprise :</span> {{ job.company_location }}</div>
     <div class="job-field"><span class="job-label">Taille de l'entreprise :</span> {{ job.company_size }}</div>
 
-    <a class="back-link" href="{% url 'home' %}">← Retour à l'accueil</a>
+    <a class="back-link" href="{% url 'home' %}">Retour à l'accueil</a>
 </div>
 
-</body>
-</html>
+{% endblock %}

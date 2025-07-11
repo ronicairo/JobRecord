@@ -1,16 +1,55 @@
-    <style>
-        body { font-family: Arial, sans-serif; padding: 2rem; background-color: #181818; }
-        h1,ul li, p { color: #f3f3f3; }
-        ul { list-style: none; padding: 0; }
-        li { margin: 1rem 0; }
-        a { text-decoration: none; color: #007BFF; font-size: 1.1rem; }
-        a:hover { text-decoration: underline; }
-    </style>
-    <h1>Dashboard des Jobs les mieux notés</h1>
-    <ul>
-        {% for job in top_rated_jobs %}
-            <li>{{ job.job_title }} – Note moyenne : {{ job.avg_rating|floatformat:2 }}</li>
-        {% endfor %}
-    </ul>
-    <p><strong>Nombre de feedbacks avec note ≥ 4 :</strong> {{ nb_feedbacks_pos }}</p>
+{% extends "base.html" %}
 
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    h1 {
+        color: #00bfff;
+        font-size: 2.2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        max-width: 700px;
+        margin: 0 auto 2rem auto;
+    }
+
+    ul li {
+        background-color: #1e1e1e;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        color: #f3f3f3;
+        font-size: 1.1rem;
+    }
+
+    p {
+        color: #f3f3f3;
+        text-align: center;
+        font-size: 1.2rem;
+        background-color: #2a2a2a;
+        padding: 1rem;
+        border-radius: 10px;
+        width: fit-content;
+        margin: 0 auto;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    }
+</style>
+
+<h1>🏆 Jobs les mieux notés</h1>
+
+<ul>
+    {% for job in top_rated_jobs %}
+        <li><strong>{{ job.job_title }}</strong> — Note moyenne : <span style="color:#ffcc00">{{ job.avg_rating|floatformat:2 }}/5</span></li>
+    {% empty %}
+        <li>Aucun job noté pour le moment.</li>
+    {% endfor %}
+</ul>
+
+<p>👍 Nombre de feedbacks avec note ≥ 4 : <strong style="color: #00e676;">{{ nb_feedbacks_pos }}</strong></p>
+{% endblock %}

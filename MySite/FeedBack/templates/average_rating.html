@@ -1,13 +1,14 @@
-<h2>Note moyenne pour {{ job.job_title }}</h2>
-<p>
-    Moyenne : {{ average|default:"Aucune note" }}/5
-</p>
-<a href="{% url 'feedback:feedback_list' job.id %}">Voir les feedbacks</a>
- <style>
-        body { font-family: Arial, sans-serif; padding: 2rem; background-color: #181818; }
-        h1, h2, p { color: #f3f3f3; }
-        ul { list-style: none; padding: 0; }
-        li { margin: 1rem 0; }
-        a { text-decoration: none; color: #007BFF; font-size: 1.1rem; }
-        a:hover { text-decoration: underline; }
-    </style>
+{% extends "base.html" %}
+
+{% block title %}Moyenne des Feedbacks{% endblock %}
+
+{% block content %}
+<h2>Note moyenne pour <span style="color:#00bfff">{{ job.job_title }}</span></h2>
+
+<div style="margin-top: 1.5rem; background-color: #1e1e1e; padding: 1rem 1.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); max-width: 400px;">
+    <p style="font-size: 1.3rem; color: #ffffff; margin-bottom: 0.5rem;">
+        Moyenne : <strong>{{ average|default:"Aucune note" }}/5</strong>
+    </p>
+    <a href="{% url 'feedback:feedback_list' job.id %}" style="color: #00bfff; font-weight: bold;">Voir les feedbacks</a>
+</div>
+{% endblock %}

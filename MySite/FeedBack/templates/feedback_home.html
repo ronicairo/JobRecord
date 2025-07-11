@@ -37,19 +37,45 @@
         font-size: 2.5rem;
     }
 
-    form {
+  .search-bar {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
+        gap: 0.5rem;
         margin-bottom: 2rem;
     }
 
-    input[type="text"] {
+    .search-bar input[type="text"],
+    .search-bar select {
         padding: 0.5rem 1rem;
         font-size: 1rem;
-        border-radius: 8px 0 0 8px;
         border: none;
+        border-radius: 8px;
         outline: none;
-        width: 250px;
+        background-color: #2a2a2a;
+        color: #f3f3f3;
+        min-width: 220px;
+    }
+
+    .search-bar select {
+        background-color: #2f2f2f;
+    }
+
+    .search-bar button {
+        padding: 0.5rem 1.2rem;
+        font-size: 1rem;
+        background-color: #00bfff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .search-bar button:hover {
+        background-color: #009acd;
+        transform: translateY(-2px);
     }
 
     button {
@@ -72,6 +98,11 @@
         margin: 0 auto;
     }
 
+    .job-title {
+        color: #ffffff;
+       
+    }
+
     .job-card {
         background-color: #1e1e1e;
         padding: 1rem 1.5rem;
@@ -85,7 +116,6 @@
         font-size: 1.3rem;
         font-weight: bold;
         margin-bottom: 0.8rem;
-        color: #ffffff;
     }
 
     .job-actions a,
@@ -105,23 +135,30 @@
         font-weight: bold;
     }
 </style>
+{% extends "base.html" %}
 
-<body>
-    <h1>Recherche de Jobs</h1>
-    <form id="search-form">
-        <input type="text" id="job-title" placeholder="Titre du job"/>
-            <select id="ordering">
-            <option value="">Trier par...</option>
-            <option value="salary">Salaire ↑</option>
-            <option value="-salary">Salaire ↓</option>
-        </select>
-        <button type="submit">Rechercher</button>
-    </form>
-    <p id="search-error"></p>
+{% block title %}Recherche Job{% endblock %}
 
-    <div id="job-results"></div>
-</body>
+{% block content %}
+<h1>Recherche de Jobs</h1>
 
+<form id="search-form" class="search-bar">
+    <input type="text" id="job-title" placeholder="Nom du Job" />
+    
+    <select id="ordering">
+        <option value="">Trier par...</option>
+        <option value="salary">Salaire ↑</option>
+        <option value="-salary">Salaire ↓</option>
+    </select>
+
+    <button type="submit">Rechercher</button>
+</form>
+
+<p id="search-error"></p>
+<div id="job-results"></div>
+{% endblock %}
+
+{% block extra_scripts %}
 <script>
     const jobResultsDiv = document.getElementById("job-results");
     const errorText = document.getElementById("search-error");
@@ -215,5 +252,5 @@
             });
     }
 </script>
-
+{% endblock %}
 </html>

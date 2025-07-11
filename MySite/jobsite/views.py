@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import JobRecord, Contract, Skill, Industry, Candidate
-from django.db.models import Avg
+from django.db.models import Avg, Count
+from rest_framework.response import Response
 
 def stats_view(request):
     total_jobs = JobRecord.objects.count()
@@ -22,9 +23,10 @@ def home(request):
     return render(request, 'home.html')
 
 from rest_framework.permissions import IsAuthenticated
-from jobsite.serializer import JobRecordSerializer, ContractSerializer, SkillSerializer, IndustrySerializer, CandidateSerializer
+from jobsite.serializer import JobRecordSerializer, ContractSerializer, SkillSerializer, IndustrySerializer, DashboardSerializer, CandidateSerializer
 from rest_framework import viewsets, filters
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.views import APIView
 
 class JobRecordPagination(PageNumberPagination):
     page_size = 10
@@ -57,3 +59,21 @@ class IndustryViewSet(viewsets.ModelViewSet):
 class CandidateViewSet(viewsets.ModelViewSet):
     queryset = Candidate.objects.all()
     serializer_class = CandidateSerializer
+
+class DashboardAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        queryset = JobRecord.objects.annotate(
+            avg_rating=Avg('feedback__rating'),
+            feedback_count=Count('feedback')
+        ).values('job_title', 'avg_rating', 'feedback_count')
+        return Response(queryset)
+    
+def dashboard_api(request):
+    jobs = JobRecord.objects.annotate(
+        avg_rating=Avg('feedback__rating'),
+        feedback_count=Count('feedback')
+    )
+    serializer = DashboardSerializer(jobs, many=True)
+    return Response(serializer.data)

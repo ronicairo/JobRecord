@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Dashboard API{% endblock %}
+
+{% block content %}
+<h1>Statistiques API des Jobs</h1>
+<div id="dashboard-container"></div>
+
+<script>
+    fetch("/api/dashboard/", {
+        headers: {
+            'Authorization': 'Token 85fcd14fd1262686c2cc5e743cd9acc40ffa6fcc',
+            'Accept': 'application/json'
+        }
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Erreur d'authentification ou d'accès à l'API.");
+        return res.json();
+    })
+    .then(data => {
+        const container = document.getElementById("dashboard-container");
+        if (data.length === 0) {
+            container.innerHTML = "<p style='color: #ccc;'>Aucune donnée disponible.</p>";
+            return;
+        }
+
+        data.forEach(job => {
+            const div = document.createElement("div");
+            div.style.marginBottom = "1rem";
+            div.innerHTML = `
+                <strong style="color: #00bfff;">${job.job_title}</strong><br>
+                Moyenne : <span style="color: #ffcc00;">${job.avg_rating?.toFixed(2) ?? "N/A"}</span><br>
+                Nombre de feedbacks : <span style="color: #f3f3f3;">${job.feedback_count}</span>
+            `;
+            container.appendChild(div);
+        });
+    })
+    .catch(error => {
+        const container = document.getElementById("dashboard-container");
+        container.innerHTML = `<p style='color: red;'>${error.message}</p>`;
+    });
+</script>
+
+{% endblock %}

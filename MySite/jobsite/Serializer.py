@@ -34,3 +34,11 @@ class CandidateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Candidate
         fields = ['id', 'name', 'email', 'location']
+
+class DashboardSerializer(serializers.ModelSerializer):
+    avg_rating = serializers.FloatField()
+    feedback_count = serializers.IntegerField()
+
+    class Meta:
+        model = JobRecord
+        fields = ['job_title', 'avg_rating', 'feedback_count']

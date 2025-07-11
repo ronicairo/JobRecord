@@ -62,17 +62,18 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'rating']
     ordering = ['rating'] 
 
-def get_queryset(self):
-    queryset = Feedback.objects.all()
-    job_id = self.request.query_params.get('job')
-    min_rating = self.request.query_params.get('min_rating')
+    def get_queryset(self):
+        queryset = Feedback.objects.all()
+        job_id = self.request.query_params.get('job')
+        min_rating = self.request.query_params.get('rating')
 
-    if job_id:
-        queryset = queryset.filter(job_id=job_id)
-    if min_rating:
-        queryset = queryset.filter(rating__gte=min_rating)
+        if job_id is not None:
+            queryset = queryset.filter(job_id=job_id)
 
-    return queryset
+        if min_rating is not None:
+            queryset = queryset.filter(rating__gte=min_rating)
+        
+        return queryset
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

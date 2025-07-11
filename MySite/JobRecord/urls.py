@@ -18,7 +18,7 @@ Including another URLconf
 from gc import get_stats
 from django.contrib import admin
 from django.urls import path, include
-from jobsite.views import ContractViewSet, JobRecordViewSet, SkillViewSet, IndustryViewSet, CandidateViewSet, stats_view
+from jobsite.views import ContractViewSet, JobRecordViewSet, SkillViewSet, IndustryViewSet, CandidateViewSet, stats_view, job_detail
 from JobRecord import views as core_views 
 from rest_framework.routers import DefaultRouter
 
@@ -34,5 +34,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('stats/', stats_view, name='stats'),
     path('feedback/', include('FeedBack.urls', namespace='feedback')),
+    path('job/<int:id>/', job_detail, name='job_detail'),
 ]
 urlpatterns += router.urls

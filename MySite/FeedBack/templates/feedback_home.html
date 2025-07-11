@@ -109,26 +109,50 @@
 <body>
     <h1>Recherche de Jobs</h1>
     <form id="search-form">
-        <input type="text" id="job-title" placeholder="Titre du job" required />
+        <input type="text" id="job-title" placeholder="Titre du job"/>
+            <select id="ordering">
+            <option value="">Trier par...</option>
+            <option value="salary">Salaire ↑</option>
+            <option value="-salary">Salaire ↓</option>
+        </select>
         <button type="submit">Rechercher</button>
     </form>
     <p id="search-error"></p>
 
     <div id="job-results"></div>
 </body>
+
 <script>
     const jobResultsDiv = document.getElementById("job-results");
     const errorText = document.getElementById("search-error");
+    const token = "85fcd14fd1262686c2cc5e743cd9acc40ffa6fcc";
     let currentSearch = "";
 
     document.getElementById("search-form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        currentSearch = document.getElementById("job-title").value.trim();
-        fetchJobs(`/jobrecords/?search=${encodeURIComponent(currentSearch)}`);
+    e.preventDefault();
+
+        const jobTitle = document.getElementById("job-title").value.trim();
+        const ordering = document.getElementById("ordering").value;
+        const queryParams = new URLSearchParams();
+
+        if (jobTitle) queryParams.append("search", jobTitle);
+        if (ordering) queryParams.append("ordering", ordering);
+
+    const url = queryParams.toString() ? `/jobrecords/?${queryParams.toString()}` : `/jobrecords/`;
+
+    fetchJobs(url, {
+        headers: {
+            'Authorization': 'Token 85fcd14fd1262686c2cc5e743cd9acc40ffa6fcc'
+        }
     });
+});
 
     function fetchJobs(url) {
-        fetch(url)
+        fetch(url, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+            })
             .then((response) => {
                 if (!response.ok) throw new Error("Erreur de la requête.");
                 return response.json();
@@ -149,13 +173,13 @@
                 data.results.forEach((job) => {
                     const jobDiv = document.createElement("div");
                     jobDiv.classList.add("job-card");
-
                     jobDiv.innerHTML = `
                         <div class="job-title">${job.job_title}</div>
                         <div class="job-actions">
                             <a href="/feedback/${job.id}/">Voir feedbacks</a>
                             <a href="/feedback/${job.id}/add/">Ajouter feedback</a>
                             <a href="/feedback/${job.id}/average/">Moyenne</a>
+                            <a href="/job/${job.id}/">Voir détails</a>
                         </div>
                     `;
                     jobResultsDiv.appendChild(jobDiv);

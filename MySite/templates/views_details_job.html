@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails du Job</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #181818;
+            color: #f3f3f3;
+            padding: 2rem;
+        }
+
+        .job-container {
+            background-color: #1e1e1e;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #00bfff;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .job-field {
+            margin-bottom: 1rem;
+        }
+
+        .job-label {
+            font-weight: bold;
+            color: #bbbbbb;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #00bfff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="job-container">
+    <h1>{{ job.job_title }}</h1>
+
+    <div class="job-field"><span class="job-label">Année :</span> {{ job.work_year }}</div>
+    <div class="job-field"><span class="job-label">Niveau d'expérience :</span> {{ job.experience_level }}</div>
+    <div class="job-field"><span class="job-label">Type de contrat :</span> {{ job.employment_type }}</div>
+    <div class="job-field"><span class="job-label">Salaire :</span> {{ job.salary }} {{ job.salary_currency }}</div>
+    <div class="job-field"><span class="job-label">Salaire en USD :</span> {{ job.salary_in_usd }}</div>
+    <div class="job-field"><span class="job-label">Télétravail :</span> {{ job.remote_ratio }}%</div>
+    <div class="job-field"><span class="job-label">Résidence de l'employé :</span> {{ job.employee_residence }}</div>
+    <div class="job-field"><span class="job-label">Lieu de l'entreprise :</span> {{ job.company_location }}</div>
+    <div class="job-field"><span class="job-label">Taille de l'entreprise :</span> {{ job.company_size }}</div>
+
+    <a class="back-link" href="{% url 'home' %}">← Retour à l'accueil</a>
+</div>
+
+</body>
+</html>

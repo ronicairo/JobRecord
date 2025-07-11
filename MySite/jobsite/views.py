@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import JobRecord, Contract, Skill, Industry, Candidate
 from django.db.models import Avg
 
@@ -14,6 +14,10 @@ def stats_view(request):
     }
     return render(request, "stats.html", context)
 
+def job_detail(request, id):
+    job = get_object_or_404(JobRecord, id=id)
+    return render(request, 'views_details_job.html', {'job': job})
+
 def home(request):
     return render(request, 'home.html')
 
@@ -23,7 +27,7 @@ from rest_framework import viewsets, filters
 from rest_framework.pagination import PageNumberPagination
 
 class JobRecordPagination(PageNumberPagination):
-    page_size = 5
+    page_size = 10
 
 class JobRecordViewSet(viewsets.ModelViewSet):
     queryset = JobRecord.objects.all()
@@ -31,8 +35,10 @@ class JobRecordViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly] 
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['job_title']
+    ordering_fields = ['salary'] 
     pagination_class = JobRecordPagination
 
+    
 class ContractViewSet(viewsets.ModelViewSet):
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer

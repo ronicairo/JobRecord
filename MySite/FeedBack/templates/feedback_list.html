@@ -1,23 +1,147 @@
-<h2>Feedbacks pour {{ job.job_title }}</h2>
-<form method="get">
-    <label for="min">Note minimum :</label>
-    <input type="number" name="min" id="min" value="{{ min_rating }}" min="1" max="5">
-    <button type="submit">Filtrer</button>
-</form>
-<ul>
-    {% for f in feedbacks %}
-        <li>{{ f.author_name }} ({{ f.rating }}/5) : {{ f.comment }}</li>
-    {% empty %}
-        <li>Aucun feedback trouvé.</li>
-    {% endfor %}
-</ul>
-<a href="{% url 'feedback:add_feedback' job.id %}">Ajouter un feedback</a>
 <style>
-        body { font-family: Arial, sans-serif; padding: 2rem; background-color: #181818; }
-        h1,h2, label{ color: #f3f3f3; }
-        h1, li { color: #f3f3f3; }
-        ul { list-style: none; padding: 0; }
-        li { margin: 1rem 0; }
-        a { text-decoration: none; color: #007BFF; font-size: 1.1rem; }
-        a:hover { text-decoration: underline; }
-    </style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 2rem;
+        background-color: #181818;
+        color: #f3f3f3;
+    }
+
+    h2 {
+        color: #00bfff;
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    select {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        background-color: #1e1e1e;
+        color: #f3f3f3;
+    }
+
+    button {
+        background-color: #00bfff;
+        color: white;
+        padding: 0.5rem 1.2rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+        background-color: #009acd;
+        transform: translateY(-2px);
+    }
+
+    #feedback-list {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .feedback-card {
+        background-color: #1e1e1e;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .feedback-card strong {
+        color: #00bfff;
+        font-size: 1.2rem;
+    }
+
+    .feedback-card .rating {
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    .feedback-card .comment {
+        color: #ccc;
+        margin-top: 0.5rem;
+    }
+
+    a {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        color: #00bfff;
+        font-weight: bold;
+        margin-top: 2rem;
+        font-size: 1.1rem;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<h2>Feedbacks pour {{ job.job_title }}</h2>
+
+<form method="get" id="ordering-form">
+    <label for="ordering">Trier par :</label>
+    <select id="ordering" name="ordering">
+        <option value="">-- Choisir --</option>
+        <option value="rating">Note ↑</option>
+        <option value="-rating">Note ↓</option>
+    </select>
+    <button type="submit">Trier</button>
+</form>
+
+<div id="feedback-list" data-job-id="{{ job.id }}"></div>
+
+<a href="{% url 'feedback:add_feedback' job.id %}">Ajouter un feedback</a>
+
+<script>
+const feedbackList = document.getElementById("feedback-list");
+const jobId = feedbackList.dataset.jobId;
+
+function loadFeedbacks(ordering = "") {
+    const params = new URLSearchParams();
+    params.append("job", jobId);
+    if (ordering) params.append("ordering", ordering);
+
+    fetch(`/feedback/api/?${params.toString()}`)
+        .then(response => response.json())
+        .then(data => {
+            feedbackList.innerHTML = "";
+            if (data.results.length === 0) {
+                feedbackList.innerHTML = `<p style="color: #ccc;">Aucun feedback trouvé.</p>`;
+                return;
+            }
+            data.results.forEach(fb => {
+                const div = document.createElement("div");
+                div.className = "feedback-card";
+                div.innerHTML = `
+                    <strong>${fb.author_name}</strong>
+                    <div class="rating">Note : ${fb.rating}/5</div>
+                    <div class="comment">${fb.comment || "(Pas de commentaire)"}</div>
+                `;
+                feedbackList.appendChild(div);
+            });
+        });
+}
+
+loadFeedbacks();
+
+document.getElementById("ordering-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const ordering = document.getElementById("ordering").value;
+    loadFeedbacks(ordering);
+});
+</script>

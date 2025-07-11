@@ -116,7 +116,11 @@ function loadFeedbacks(ordering = "") {
     params.append("job", jobId);
     if (ordering) params.append("ordering", ordering);
 
-    fetch(`/feedback/api/?${params.toString()}`)
+    fetch(`/feedback/api/?${params.toString()}`, {
+    headers: {
+        'Authorization': 'Token 85fcd14fd1262686c2cc5e743cd9acc40ffa6fcc'
+    }
+})
         .then(response => response.json())
         .then(data => {
             feedbackList.innerHTML = "";

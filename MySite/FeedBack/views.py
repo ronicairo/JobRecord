@@ -51,12 +51,12 @@ def dashboard_view(request):
 
 from FeedBack.serializer import FeedbackSerializer, CategorySerializer
 from rest_framework import viewsets, filters
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 class FeedbackViewSet(viewsets.ModelViewSet):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly] 
+    permission_classes = [IsAuthenticated] 
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['comment']
     ordering_fields = ['created_at', 'rating']
